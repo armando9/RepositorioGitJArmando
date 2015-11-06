@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BD Distribuidas</title>
+	<meta charset = "utf-8">
+	<link rel="stylesheet" href="css/estilos.css">
+	<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+	<!--<link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico">-->
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var opcionElegida = 1;
+			$("#comboBD").load("MostrarDatos.php?opcion=" + opcionElegida);
+			$("#btn1").click(function(evento) {
+				opcionElegida = 1;
+				$("#comboBD").load("MostrarDatos.php?opcion=" + opcionElegida);
+			});
+			$("#btn2").click(function(evento) {
+				opcionElegida = 2;
+				$("#comboBD").load("MostrarDatos.php?opcion=" + opcionElegida);
+			});
+			var opcionSelecionada = "information_schema";
+			$("#comboTablas").load("cargarTablas.php?bd=" + opcionSelecionada + "&opcion=" + opcionElegida);
+			$("#comboBD").click(function(evento) {				
+				var nuevaOpcion = $('#formu #comboBD :selected').attr('value');				
+				if (nuevaOpcion != opcionSelecionada) {
+					$("#comboTablas").load("cargarTablas.php?bd=" + $('#formu #comboBD :selected').attr('value') + "&opcion=" + opcionElegida);
+					opcionSelecionada = nuevaOpcion;
+				}
+			});
+			var tablaAnterior = "CHARACTER_SETS";
+			$("#informacion").load("mostrarInformacion.php?bd=" + opcionSelecionada + "&opcion=" + opcionElegida + "&tabla=" + tablaAnterior);
+			$("#comboTablas").click(function(evento) {
+				var tablaActual = $('#formu #comboTablas :selected').attr('value');
+				if (tablaActual != tablaAnterior) {
+					$("#informacion").load("mostrarInformacion.php?bd=" + $('#formu #comboBD :selected').attr('value') + "&opcion=" + opcionElegida + "&tabla=" + tablaActual);
+					tablaAnterior = tablaActual;
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<div id = "raiz">
+		<header class = "headerPrincipal">
+			<figure>
+				<img src="imagenes/logoUmar.png" alt = "No se encontró el logotipo" title = "UMAR Campus Puerto Escondido.">
+			</figure>
+			<div>
+				<hgroup>
+					<h1>Base de Datos Distribuidas</h1>
+				</hgroup>
+			</div>
+		</header>
+
+		<nav>	</nav>
+		<section>
+			<article id = "opciones">
+				<fieldset id = "contenedorbtn">
+					<legend>Opciones</legend>
+					<input type = "button" class="botones" id = "btn1" name = "opcion1" value = "Opcion 1">
+					<input type = "button" class="botones" id = "btn2" name = "opcion2" value = "Opcion 2">
+				</fieldset>
+			</article>
+
+			<article id = "resultado">
+				<form id = "formu">
+					<legend>Resultado</legend>
+					<select id = "comboBD"></select>
+					<select id = "comboTablas"></select>	
+					<table id = "informacion" border = 1></table>				
+				</form>				
+			</article>
+		</section>
+
+		<footer>
+			<small>Derechos Reservados &copy; 2015 UMAR</small>
+		</footer>
+	</div>
+</body>
+</html>
